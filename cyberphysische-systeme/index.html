@@ -92,7 +92,7 @@ function lev(a,b){const d=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;
 /* ---------- Speicher ---------- */
 let S;
 function load(){try{S=JSON.parse(localStorage.getItem('lf7v1'))}catch(e){S=null}if(!S||typeof S!=='object')S={xp:0,q:{}}}
-function save(){try{localStorage.setItem('lf7v1',JSON.stringify(S))}catch(e){}}
+function save(){try{localStorage.setItem('lf7v1',JSON.stringify(S));localStorage.setItem('meta:lf7',JSON.stringify({pct:Math.floor(prog(Q)*100),xp:S.xp||0,t:Date.now()}))}catch(e){}}
 load();
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
 /* Sichern / Laden (zum Übertragen auf ein anderes Gerät) */
@@ -149,7 +149,7 @@ function home(){
   const full=Q.every(mastered);
   const lvl=Math.floor(S.xp/250);
   const done=KANN.filter(k=>Q.filter(q=>q.k===k[0]).every(mastered)).length;
-  let h=`<div class="hero"><h1>LF 7 – Cyber-physische Systeme</h1>
+  let h=`<div class="hero"><a href="../index.html" class="muted">← Alle Fächer</a><h1>LF 7 – Cyber-physische Systeme</h1>
   <div class="muted">Kann-Liste Woche 1 + 2 · Buch Kap. 2.1–2.3 · ${Q.length} Aufgaben (${Q.filter(q=>q.t==='gen').length} davon dynamisch: jedes Mal neue Varianten)</div>
   <div class="row" style="margin-top:10px"><div class="big">${full?'100':p}%</div>
   <div style="flex:1;min-width:200px"><div class="bar2"><i style="width:${p}%"></i></div>
