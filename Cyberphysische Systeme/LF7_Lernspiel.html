@@ -41,7 +41,7 @@ button:disabled{opacity:.5;cursor:default}
 .mrow.ok{background:var(--okbg)}.mrow.bad{background:var(--badbg)}
 .mrow span{flex:1 1 220px}
 select,input[type=text],textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.45em .6em;max-width:100%}
-select{flex:1 1 220px}input[type=text],textarea{width:100%}textarea{min-height:90px}
+select{flex:1 1 220px}select.cz{flex:none;width:auto;margin:0 4px}input[type=text],textarea{width:100%}textarea{min-height:90px}
 .ordrow{display:flex;gap:8px;align-items:center;margin:6px 0;padding:6px 8px;border:1px solid var(--line);border-radius:10px}
 .ordrow.ok{background:var(--okbg);border-color:var(--ok)}.ordrow.bad{background:var(--badbg);border-color:var(--bad)}
 .ordrow span{flex:1}.ordrow button{padding:.2em .6em}
@@ -59,6 +59,7 @@ table{width:100%;border-collapse:collapse}td,th{padding:6px 8px;border-bottom:1p
 <div id="app"></div>
 <script src="fragen1.js"></script>
 <script src="fragen2.js"></script>
+<script src="generator.js"></script>
 <script src="lexikon.js"></script>
 <script>
 "use strict";
@@ -93,14 +94,15 @@ let S;
 function load(){try{S=JSON.parse(localStorage.getItem('lf7v1'))}catch(e){S=null}if(!S||typeof S!=='object')S={xp:0,q:{}}}
 function save(){try{localStorage.setItem('lf7v1',JSON.stringify(S))}catch(e){}}
 load();
-Q.forEach(q=>q.id=hash(q.t+'|'+q.q));
+Q.forEach(q=>{if(!q.id)q.id=hash(q.t+'|'+q.q+'|'+(q.text||''))});
 const stat=q=>S.q[q.id]||{s:0,r:0,w:0};
-const prog=list=>list.length?list.reduce((a,q)=>a+Math.min(stat(q).s,2),0)/(2*list.length):0;
-const mastered=q=>stat(q).s>=2;
+const need=q=>q.need||2;
+const prog=list=>list.length?list.reduce((a,q)=>a+Math.min(stat(q).s,need(q))/need(q),0)/list.length:0;
+const mastered=q=>stat(q).s>=need(q);
 
 /* ---------- Auswahl ---------- */
 function pick(pool,n){
-  return pool.map(q=>{const s=stat(q);let w=s.s>=2?1:8;if(s.w>0&&s.s<2)w+=6;if(!s.r&&!s.w)w+=2;return [q,Math.random()*w]})
+  return pool.map(q=>{const s=stat(q);let w=mastered(q)?1:8;if(s.w>0&&!mastered(q))w+=6;if(!s.r&&!s.w)w+=2;return [q,Math.random()*w]})
     .sort((a,b)=>b[1]-a[1]).slice(0,n).map(x=>x[0]);
 }
 function pickBalanced(n){
@@ -118,7 +120,7 @@ function startRun(title,list,opts={}){
 const practice=k=>{const t=KANN.find(x=>x[0]===k);const go=()=>startRun(`Kann ${k}: ${t[2]}`,pick(Q.filter(q=>q.k===k),10),{again:go});go()};
 const mixed=()=>{const go=()=>startRun('Gemischte Runde (Schwächen zuerst)',pick(Q,12),{again:go});go()};
 const exam=()=>{const go=()=>startRun('Prüfung: alle Kann-Punkte',pickBalanced(30),{exam:true,again:go});go()};
-const weak=()=>{const p=Q.filter(q=>stat(q).w>0&&stat(q).s<2);if(!p.length){alert('Keine offenen Fehler – stark! Probiere die Prüfung.');return}const go=()=>startRun('Meine Fehler',pick(Q.filter(q=>stat(q).w>0&&stat(q).s<2),12),{again:go});go()};
+const weak=()=>{const p=Q.filter(q=>stat(q).w>0&&!mastered(q));if(!p.length){alert('Keine offenen Fehler – stark! Probiere die Prüfung.');return}const go=()=>startRun('Meine Fehler',pick(Q.filter(q=>stat(q).w>0&&!mastered(q)),12),{again:go});go()};
 
 /* ---------- Startseite ---------- */
 function render(h){$('#app').innerHTML=h;window.scrollTo(0,0)}
@@ -129,11 +131,11 @@ function home(){
   const lvl=Math.floor(S.xp/250);
   const done=KANN.filter(k=>Q.filter(q=>q.k===k[0]).every(mastered)).length;
   let h=`<div class="hero"><h1>LF 7 – Cyber-physische Systeme</h1>
-  <div class="muted">Kann-Liste Woche 1 + 2 · Buch Kap. 2.1–2.3 · ${Q.length} Fragen</div>
+  <div class="muted">Kann-Liste Woche 1 + 2 · Buch Kap. 2.1–2.3 · ${Q.length} Aufgaben (${Q.filter(q=>q.t==='gen').length} davon dynamisch: jedes Mal neue Varianten)</div>
   <div class="row" style="margin-top:10px"><div class="big">${full?'100':p}%</div>
   <div style="flex:1;min-width:200px"><div class="bar2"><i style="width:${p}%"></i></div>
   <div class="muted">${done} von 13 Kann-Punkten gemeistert · Rang: <b>${TITLES[Math.min(lvl,TITLES.length-1)]}</b> · ⭐ ${S.xp} XP</div></div></div>
-  <div class="muted" style="margin-top:8px">Gemeistert = jede Frage des Punkts <b>2× in Folge richtig</b>. Eine falsche Antwort setzt die Frage zurück.</div>
+  <div class="muted" style="margin-top:8px">Gemeistert = jede Frage des Punkts <b>2× in Folge richtig</b> (dynamische Aufgaben 3×). Eine falsche Antwort setzt die Frage zurück.</div>
   <div class="acts"><button class="pri" data-act="mixed">▶ Gemischte Runde</button><button data-act="exam">🏆 Prüfung (30)</button><button data-act="weak">🔁 Meine Fehler</button><button data-act="lex">📖 Lexikon</button></div></div>`;
   [[1,'Woche 1 – Grundlagen cyber-physischer Systeme'],[2,'Woche 2 – Kommunikation & Gefahren']].forEach(([w,tt])=>{
     h+=`<h3>${tt}</h3>`;
@@ -151,11 +153,11 @@ function home(){
 /* ---------- Frage anzeigen ---------- */
 function showQ(){
   if(run.i>=run.queue.length)return summary();
-  const q=run.queue[run.i];cur={q,done:false};
+  const b0=run.queue[run.i];const q=b0.t==='gen'?b0.make():b0;cur={q,base:b0,done:false};
   const total=run.queue.length;
   render(`<div class="bar"><button class="ghost" data-act="home">✕ Beenden</button><div class="t">${esc(run.title)}</div><div class="xp">⭐ ${S.xp}${run.combo>1?' · 🔥'+run.combo:''}</div></div>
   <div class="prog"><i style="width:${run.i/total*100}%"></i></div>
-  <div class="q"><div class="meta"><span class="chip ${q.l}">${LV[q.l]}</span><span class="chip k">Kann ${q.k}</span><span>Frage ${run.i+1}/${total}${run.seen.has(q.id)?' · Wiederholung':''}</span></div>
+  <div class="q"><div class="meta"><span class="chip ${q.l}">${LV[q.l]}</span><span class="chip k">Kann ${q.k}</span>${q.gen?'<span class="chip k">🎲 neu generiert</span>':''}<span>Frage ${run.i+1}/${total}${run.seen.has(q.id)?' · Wiederholung':''}</span></div>
   <h2>${esc(q.q)}${q.t==='ms'?' <span class="muted">(mehrere richtig)</span>':''}</h2>
   <div id="ans"></div><div id="fb"></div><div class="ctl" id="ctl"></div></div>`);
   build(q);
@@ -202,6 +204,16 @@ function build(q){
     $('#check').onclick=()=>{let ok=true;
       [...A.querySelectorAll('.ordrow')].forEach((r,i)=>{const good=cur.arr[i]===q.items[i];if(!good)ok=false;r.classList.add(good?'ok':'bad');r.querySelectorAll('button').forEach(b=>b.disabled=true)});
       finish(ok,ok?'':'<p><b>Richtige Reihenfolge:</b></p><ol>'+q.items.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>')};
+  }else if(q.t==='cz'){
+    const answers=[];const tpl=q.text.replace(/\{([^}]+)\}/g,(m,a)=>{answers.push(a);return '\u0000'});
+    const bank=shuffle([...new Set([...answers,...q.extra])]);const parts=tpl.split('\u0000');
+    let h='<p class="muted">Wähle für jede Lücke das passende Wort aus der Wortbank.</p><div style="line-height:2.6">';
+    parts.forEach((pt,i)=>{h+=esc(pt);if(i<answers.length)h+=`<select class="cz"><option value="">…</option>${bank.map(x=>`<option>${esc(x)}</option>`).join('')}</select>`});
+    A.innerHTML=h+'</div>';
+    ctl('<button class="pri" id="check">Prüfen</button>');
+    $('#check').onclick=()=>{let ok=true;[...A.querySelectorAll('select')].forEach((sel,i)=>{const g=sel.value===answers[i];sel.disabled=true;sel.style.outline='2px solid '+(g?'var(--ok)':'var(--bad)');if(!g)ok=false});
+      let full='';parts.forEach((pt,i)=>{full+=pt+(i<answers.length?'['+answers[i]+']':'')});
+      finish(ok,ok?'':'<p><b>Richtig wäre:</b> '+esc(full)+'</p>')};
   }else if(q.t==='tx'){
     A.innerHTML='<input type="text" id="inp" autocomplete="off" placeholder="Antwort eingeben …">';
     setTimeout(()=>$('#inp')&&$('#inp').focus(),50);
@@ -227,7 +239,7 @@ function finish(ok,extra){
   if(!retry){run.seen.add(q.id);run.n++;if(ok)run.first++;run.log.push({k:q.k,ok})}
   let gain=0;
   if(ok){st.s++;st.r++;run.combo++;gain=10+Math.min(run.combo-1,5)*2;S.xp+=gain}
-  else{st.s=0;st.w++;run.combo=0;if(!retry)run.wrong.push(q);if(!run.exam&&!run.retried.has(q.id)){run.retried.add(q.id);run.queue.push(q)}}
+  else{st.s=0;st.w++;run.combo=0;if(!retry)run.wrong.push(q);if(!run.exam&&!run.retried.has(q.id)){run.retried.add(q.id);run.queue.push(cur.base)}}
   save();
   const m=st.s>=2;
   $('#fb').innerHTML=`<div class="fb ${ok?'ok':'bad'}"><p><b>${ok?'✔ Richtig! +'+gain+' XP':'✘ Leider falsch'}</b>${m?' · 🏅 Frage gemeistert':ok?' · noch 1× richtig bis gemeistert':''}</p>${extra}${q.e?'<p>'+esc(q.e)+'</p>':''}</div>${helpHtml(q,!ok)}`;
@@ -240,22 +252,22 @@ function finish(ok,extra){
 /* ---------- Hilfe & Lexikon ---------- */
 function ansText(q){
   if(q.t==='mc')return q.o[0];if(q.t==='ms')return q.c.join(' ');if(q.t==='mt')return q.p.map(p=>p.join(' ')).join(' ');
-  if(q.t==='od')return q.items.join(' ');if(q.t==='tx')return q.a.join(' ');if(q.t==='fr')return q.m;if(q.t==='tf')return '';return '';
+  if(q.t==='cz')return q.text;if(q.t==='od')return q.items.join(' ');if(q.t==='tx')return q.a.join(' ');if(q.t==='fr')return q.m;if(q.t==='tf')return '';return '';
 }
 function helpHtml(q,open){
   const hay=q.q+' '+ansText(q);
   const m=LEX.map(e=>({e,n:(hay.match(new RegExp(e.re.source,'g'))||[]).length})).filter(x=>x.n).sort((a,b)=>b.n-a.n).slice(0,3);
   const k=KANN.find(x=>x[0]===q.k);
   const body=`<p>📖 <b>Nachlesen im Buch:</b> ${k[3]}${m.length?' – genauer: '+m.map(x=>x.e.p).filter(p=>p!=='–').join(' · '):''}</p>`+
-    m.map(x=>`<p><b>${esc(x.e.t)}</b> <span class="muted">(${x.e.p})</span><br>${esc(x.e.x)}</p>`).join('');
+    m.map(x=>`<p><b>${esc(x.e.t)}</b> <span class="muted">(${x.e.p})</span><br>${x.e.v?'🍕 <i>'+esc(x.e.v)+'</i><br>':''}${esc(x.e.x)}</p>`).join('');
   return `<details class="help" ${open?'open':''}><summary>${open?'💡 Kurz erklärt – dann musst du vielleicht gar nicht ins Buch':'💡 Erklärung & Buchseite'}</summary>${body}</details>`;
 }
 function lexikon(f){
   const q=(f||'').toLowerCase();
-  const list=LEX.filter(e=>!q||(e.t+' '+e.x).toLowerCase().includes(q));
+  const list=LEX.filter(e=>!q||(e.t+' '+e.x+' '+(e.v||'')).toLowerCase().includes(q));
   render(`<div class="bar"><button class="ghost" data-act="home">← Zurück</button><div class="t">📖 Lexikon</div><div></div></div>
   <input class="search" type="text" id="lexq" placeholder="Begriff suchen, z. B. SCADA, QoS, I2C …" value="${esc(f||'')}">
-  ${list.map(e=>`<div class="lexe"><b>${esc(e.t)}</b> <span class="muted">· Buch ${e.p}</span><br>${esc(e.x)}</div>`).join('')||'<p class="muted">Nichts gefunden.</p>'}`);
+  ${list.map(e=>`<div class="lexe"><b>${esc(e.t)}</b> <span class="muted">· Buch ${e.p}</span><br>${e.v?'🍕 <i>'+esc(e.v)+'</i><br>':''}${esc(e.x)}</div>`).join('')||'<p class="muted">Nichts gefunden.</p>'}`);
   const i=$('#lexq');i.focus();i.setSelectionRange(i.value.length,i.value.length);
   i.oninput=()=>lexikon(i.value);
 }
