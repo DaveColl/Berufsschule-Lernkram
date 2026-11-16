@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LF7 Lernspiel – Cyberphysische Systeme</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--tx:#1c2333;--mut:#667085;--line:#dfe4ee;--pri:#3b5bdb;--pri2:#2f4ac0;--ok:#1f9d55;--okbg:#e6f6ec;--bad:#d6336c;--badbg:#fdeaf1;--W:#2f7bd8;--V:#d98a00;--A:#1f9d55;--bar:#e7ebf5}
+@media (prefers-color-scheme:dark){:root{--bg:#10141f;--card:#1a2030;--tx:#e8ecf6;--mut:#97a1b8;--line:#2b3348;--pri:#6f8cff;--pri2:#8aa1ff;--ok:#43c47a;--okbg:#143324;--bad:#ff6b9a;--badbg:#3a1827;--bar:#262e44}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,Segoe UI,Roboto,sans-serif}
+#app{max-width:860px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:.2em 0}h2{font-size:1.2rem;margin:.4em 0 .8em;line-height:1.4}h3{margin:1.4em 0 .5em;font-size:1.05rem;color:var(--mut)}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:10px;padding:.55em 1em}
+button:hover{border-color:var(--pri)}
+button.pri{background:var(--pri);color:#fff;border-color:var(--pri)}button.pri:hover{background:var(--pri2)}
+button.ghost{border-color:transparent;background:transparent;color:var(--mut)}
+button:disabled{opacity:.5;cursor:default}
+.hero{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:12px}
+.hero .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.big{font-size:2.4rem;font-weight:800;color:var(--pri)}
+.bar2{height:10px;background:var(--bar);border-radius:99px;overflow:hidden}.bar2>i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .4s}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.card{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.card.done{border-color:var(--ok);background:linear-gradient(0deg,var(--okbg),var(--card))}
+.cn{flex:none;width:36px;height:36px;border-radius:50%;background:var(--bar);display:grid;place-items:center;font-weight:700}
+.card.done .cn{background:var(--ok);color:#fff}
+.ct{flex:1;min-width:0}.ct b{font-weight:600}.ct small{display:block;color:var(--mut)}
+.ct .bar2{margin:6px 0 3px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.bar .t{font-weight:600}.xp{color:var(--mut);font-size:.9rem;white-space:nowrap}
+.prog{height:6px;background:var(--bar);border-radius:99px;overflow:hidden;margin:6px 0 14px}.prog>i{display:block;height:100%;background:var(--pri);transition:width .3s}
+.q{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--mut);font-size:.85rem;margin-bottom:6px}
+.chip{border-radius:99px;padding:1px 10px;color:#fff;font-size:.78rem}.chip.W{background:var(--W)}.chip.V{background:var(--V)}.chip.A{background:var(--A)}.chip.k{background:var(--mut)}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:.7em 1em;background:var(--card)}
+.opt.sel{border-color:var(--pri);box-shadow:0 0 0 2px var(--pri) inset}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}.opt.bad{background:var(--badbg);border-color:var(--bad)}
+.tfrow{display:flex;gap:10px}.tfrow .opt{text-align:center;font-weight:600}
+.mrow{display:flex;gap:10px;align-items:center;margin:6px 0;flex-wrap:wrap;padding:6px;border-radius:10px}
+.mrow.ok{background:var(--okbg)}.mrow.bad{background:var(--badbg)}
+.mrow span{flex:1 1 220px}
+select,input[type=text],textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.45em .6em;max-width:100%}
+select{flex:1 1 220px}select.cz{flex:none;width:auto;margin:0 4px}input[type=text],textarea{width:100%}textarea{min-height:90px}
+.ordrow{display:flex;gap:8px;align-items:center;margin:6px 0;padding:6px 8px;border:1px solid var(--line);border-radius:10px}
+.ordrow.ok{background:var(--okbg);border-color:var(--ok)}.ordrow.bad{background:var(--badbg);border-color:var(--bad)}
+.ordrow span{flex:1}.ordrow button{padding:.2em .6em}
+.fb{margin-top:14px;padding:12px 14px;border-radius:12px;border:1px solid var(--line)}
+.fb.ok{background:var(--okbg);border-color:var(--ok)}.fb.bad{background:var(--badbg);border-color:var(--bad)}
+.fb p{margin:.3em 0}
+.model{background:var(--bg);border-left:4px solid var(--pri);padding:8px 12px;border-radius:6px;margin:8px 0}
+.ctl{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse}td,th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left}
+.help{margin-top:10px;padding:10px 14px;border-radius:12px;border:1px dashed var(--pri);background:var(--bg)}.help p{margin:.4em 0}.help summary{cursor:pointer;font-weight:600}.lexe{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0}.lexe b{color:var(--pri)}input.search{margin:10px 0}
+.muted{color:var(--mut)}.foot{margin-top:24px;text-align:center;color:var(--mut);font-size:.85rem}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="fragen1.js"></script>
+<script src="fragen2.js"></script>
+<script src="generator.js"></script>
+<script src="lexikon.js"></script>
+<script>
+"use strict";
+/* ---------- Grunddaten ---------- */
+const KANN=[
+ [1,1,'den Begriff IoT beschreiben','Kap. 2.1 · S. 78–100'],
+ [2,1,'den Begriff IIoT beschreiben','Kap. 2.1 · S. 78–100'],
+ [3,1,'IoT und IIoT voneinander abgrenzen','Kap. 2.1 · S. 78–100'],
+ [4,1,'Beispiele für IoT und IIoT beschreiben','Kap. 2.1 · S. 78–100'],
+ [5,1,'Grundbegriffe der Industrie 4.0 beschreiben','Kap. 2.1 · S. 78–100'],
+ [6,1,'Anforderungen und technische Grundlagen an das Internet of Things beschreiben','Kap. 2.1 · S. 78–100'],
+ [7,1,'Funktionen von cyberphysischen Systemen erläutern','Kap. 2.1 · S. 78–100'],
+ [8,2,'OSI-Schichten und IoT-Protokolle zuordnen','Kap. 2.2 · S. 100–112'],
+ [9,2,'unterschiedliche Kommunikationstechnologien wie Bluetooth, RFID etc. beschreiben','Kap. 2.2 · S. 100–112'],
+ [10,2,'das MQTT-Protokoll im Bezug auf ein bestimmtes Szenario beschreiben','Kap. 2.2 · S. 100–112'],
+ [11,2,'Gefahren für eine IT-Infrastruktur benennen','Kap. 2.3 · S. 112–120'],
+ [12,2,'Gefahren einer bestehenden IT-Infrastruktur identifizieren und Gegenmaßnahmen auswählen','Kap. 2.3 · S. 112–120'],
+ [13,2,'Energie-, Stoff- und Informationsflüsse eines bestehenden cyber-physischen Systems darstellen','Kap. 2.3 · S. 112–120']
+];
+const LV={W:'Wissen',V:'Verstehen',A:'Anwenden & Übertragen'};
+const TITLES=['Azubi-Anfänger','Sensor-Neuling','Datensammler','Gateway-Wächter','Broker-Profi','Edge-Experte','CPS-Architekt','Industrie-4.0-Meister'];
+
+const $=(s,e=document)=>e.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const hash=s=>{let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return 'q'+(h>>>0).toString(36)};
+const norm=s=>String(s).toLowerCase().replace(/[^a-z0-9äöüß]/g,'');
+function lev(a,b){const d=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){let p=d[0];d[0]=i;for(let j=1;j<=b.length;j++){const t=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,p+(a[i-1]===b[j-1]?0:1));p=t}}return d[b.length]}
+
+/* ---------- Speicher ---------- */
+let S;
+function load(){try{S=JSON.parse(localStorage.getItem('lf7v1'))}catch(e){S=null}if(!S||typeof S!=='object')S={xp:0,q:{}}}
+function save(){try{localStorage.setItem('lf7v1',JSON.stringify(S))}catch(e){}}
+load();
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+/* Sichern / Laden (zum Übertragen auf ein anderes Gerät) */
+function exportData(){S.lastExport=Date.now();save();return JSON.stringify({app:'lf7',v:1,date:new Date().toISOString(),S},null,0)}
+function importData(text){
+  let d;try{d=JSON.parse(text)}catch(e){return {ok:false,msg:'Datei ist kein gültiges JSON.'}}
+  const n=d&&d.app==='lf7'&&d.S&&typeof d.S.q==='object'?d.S:null;
+  if(!n)return {ok:false,msg:'Das ist keine Fortschrittsdatei dieses Lernspiels.'};
+  let changed=0;
+  for(const id in n.q){const a=n.q[id],b=S.q[id];if(!a||typeof a.s!=='number')continue;
+    if(!b||(a.r+a.w)>(b.r+b.w)){S.q[id]={s:a.s|0,r:a.r|0,w:a.w|0};changed++}}
+  S.xp=Math.max(S.xp||0,n.xp||0);save();
+  return {ok:true,msg:'Fortschritt geladen ('+changed+' Aufgaben übernommen, jeweils der weiter fortgeschrittene Stand).'};
+}
+function downloadProgress(){
+  const blob=new Blob([exportData()],{type:'application/json'});const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='lf7-fortschritt-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+const lastSaved=()=>S.lastExport?new Date(S.lastExport).toLocaleString('de-DE'):'noch nie';
+Q.forEach(q=>{if(!q.id)q.id=hash(q.t+'|'+q.q+'|'+(q.text||''))});
+const stat=q=>S.q[q.id]||{s:0,r:0,w:0};
+const need=q=>q.need||2;
+const prog=list=>list.length?list.reduce((a,q)=>a+Math.min(stat(q).s,need(q))/need(q),0)/list.length:0;
+const mastered=q=>stat(q).s>=need(q);
+
+/* ---------- Auswahl ---------- */
+function pick(pool,n){
+  return pool.map(q=>{const s=stat(q);let w=mastered(q)?1:8;if(s.w>0&&!mastered(q))w+=6;if(!s.r&&!s.w)w+=2;return [q,Math.random()*w]})
+    .sort((a,b)=>b[1]-a[1]).slice(0,n).map(x=>x[0]);
+}
+function pickBalanced(n){
+  const by=KANN.map(k=>shuffle(Q.filter(q=>q.k===k[0])));const out=[];let i=0;
+  while(out.length<n&&by.some(b=>b.length)){const b=by[i%by.length];if(b.length)out.push(b.pop());i++}
+  return shuffle(out);
+}
+
+/* ---------- Läufe ---------- */
+let run=null,cur=null;
+function startRun(title,list,opts={}){
+  run={title,queue:list.slice(),i:0,n:0,first:0,combo:0,wrong:[],exam:!!opts.exam,seen:new Set(),retried:new Set(),log:[],xp0:S.xp,again:opts.again||null};
+  showQ();
+}
+const practice=k=>{const t=KANN.find(x=>x[0]===k);const go=()=>startRun(`Kann ${k}: ${t[2]}`,pick(Q.filter(q=>q.k===k),10),{again:go});go()};
+const mixed=()=>{const go=()=>startRun('Gemischte Runde (Schwächen zuerst)',pick(Q,12),{again:go});go()};
+const exam=()=>{const go=()=>startRun('Prüfung: alle Kann-Punkte',pickBalanced(30),{exam:true,again:go});go()};
+const weak=()=>{const p=Q.filter(q=>stat(q).w>0&&!mastered(q));if(!p.length){alert('Keine offenen Fehler – stark! Probiere die Prüfung.');return}const go=()=>startRun('Meine Fehler',pick(Q.filter(q=>stat(q).w>0&&!mastered(q)),12),{again:go});go()};
+
+/* ---------- Startseite ---------- */
+function render(h){$('#app').innerHTML=h;window.scrollTo(0,0)}
+function home(){
+  run=null;cur=null;
+  const p=Math.round(prog(Q)*100);
+  const full=Q.every(mastered);
+  const lvl=Math.floor(S.xp/250);
+  const done=KANN.filter(k=>Q.filter(q=>q.k===k[0]).every(mastered)).length;
+  let h=`<div class="hero"><h1>LF 7 – Cyber-physische Systeme</h1>
+  <div class="muted">Kann-Liste Woche 1 + 2 · Buch Kap. 2.1–2.3 · ${Q.length} Aufgaben (${Q.filter(q=>q.t==='gen').length} davon dynamisch: jedes Mal neue Varianten)</div>
+  <div class="row" style="margin-top:10px"><div class="big">${full?'100':p}%</div>
+  <div style="flex:1;min-width:200px"><div class="bar2"><i style="width:${p}%"></i></div>
+  <div class="muted">${done} von 13 Kann-Punkten gemeistert · Rang: <b>${TITLES[Math.min(lvl,TITLES.length-1)]}</b> · ⭐ ${S.xp} XP</div></div></div>
+  <div class="muted" style="margin-top:8px">Gemeistert = jede Frage des Punkts <b>2× in Folge richtig</b> (dynamische Aufgaben 3×). Eine falsche Antwort setzt die Frage zurück.</div>
+  <div class="acts"><button class="pri" data-act="mixed">▶ Gemischte Runde</button><button data-act="exam">🏆 Prüfung (30)</button><button data-act="weak">🔁 Meine Fehler</button><button data-act="lex">📖 Lexikon</button></div></div>`;
+  [[1,'Woche 1 – Grundlagen cyber-physischer Systeme'],[2,'Woche 2 – Kommunikation & Gefahren']].forEach(([w,tt])=>{
+    h+=`<h3>${tt}</h3>`;
+    KANN.filter(k=>k[1]===w).forEach(k=>{
+      const l=Q.filter(q=>q.k===k[0]),m=l.filter(mastered).length,pp=Math.round(prog(l)*100);
+      h+=`<div class="card ${m===l.length?'done':''}"><div class="cn">${m===l.length?'✓':k[0]}</div>
+      <div class="ct"><b>Ich kann … ${esc(k[2])}.</b><small>${k[3]}</small><div class="bar2"><i style="width:${pp}%"></i></div>
+      <small>${m}/${l.length} gemeistert</small></div><button class="pri" data-act="k" data-k="${k[0]}">Üben</button></div>`;
+    });
+  });
+  h+=`<div class="hero" style="margin-top:18px"><b>💾 Fortschritt mitnehmen</b>
+  <div class="muted">Dein Stand wird automatisch in diesem Browser gespeichert – auf einem anderen Gerät (z. B. zuhause) ist er nicht da. Sichere ihn als Datei und lade ihn dort wieder.</div>
+  <div class="acts"><button class="pri" data-act="exp">⬇ Fortschritt sichern (Datei)</button><button data-act="imp">⬆ Fortschritt laden</button></div>
+  <div class="muted" style="margin-top:6px">Letzte Sicherung: ${lastSaved()}</div>
+  <input type="file" id="impf" accept=".json,application/json" hidden><div id="impmsg" style="margin-top:6px"></div></div>
+  <div class="foot"><button class="ghost" data-act="reset">Fortschritt zurücksetzen</button></div>`;
+  render(h);
+}
+
+/* ---------- Frage anzeigen ---------- */
+function showQ(){
+  if(run.i>=run.queue.length)return summary();
+  const b0=run.queue[run.i];const q=b0.t==='gen'?b0.make():b0;cur={q,base:b0,done:false};
+  const total=run.queue.length;
+  render(`<div class="bar"><button class="ghost" data-act="home">✕ Beenden</button><div class="t">${esc(run.title)}</div><div class="xp">⭐ ${S.xp}${run.combo>1?' · 🔥'+run.combo:''}</div></div>
+  <div class="prog"><i style="width:${run.i/total*100}%"></i></div>
+  <div class="q"><div class="meta"><span class="chip ${q.l}">${LV[q.l]}</span><span class="chip k">Kann ${q.k}</span>${q.gen?'<span class="chip k">🎲 neu generiert</span>':''}<span>Frage ${run.i+1}/${total}${run.seen.has(q.id)?' · Wiederholung':''}</span></div>
+  <h2>${esc(q.q)}${q.t==='ms'?' <span class="muted">(mehrere richtig)</span>':''}</h2>
+  <div id="ans"></div><div id="fb"></div><div class="ctl" id="ctl"></div></div>`);
+  build(q);
+}
+function ctl(h){$('#ctl').innerHTML=h}
+function build(q){
+  const A=$('#ans');
+  if(q.t==='mc'){
+    const o=shuffle(q.o.map((t,i)=>({t,ok:i===0})));cur.o=o;
+    A.innerHTML=o.map((x,i)=>`<button class="opt" data-i="${i}">${esc(x.t)}</button>`).join('');
+    A.onclick=e=>{const b=e.target.closest('.opt');if(!b||cur.done)return;const i=+b.dataset.i;
+      [...A.children].forEach((c,j)=>{c.disabled=true;if(o[j].ok)c.classList.add('ok');else if(j===i)c.classList.add('bad')});
+      finish(o[i].ok,o[i].ok?'':'<p><b>Richtig wäre:</b> '+esc(o.find(x=>x.ok).t)+'</p>')};
+  }else if(q.t==='tf'){
+    A.innerHTML=`<div class="tfrow"><button class="opt" data-v="1">✔ Wahr</button><button class="opt" data-v="0">✘ Falsch</button></div>`;
+    A.onclick=e=>{const b=e.target.closest('.opt');if(!b||cur.done)return;const v=b.dataset.v==='1';
+      [...A.querySelectorAll('.opt')].forEach(c=>{c.disabled=true;const cv=c.dataset.v==='1';if(cv===q.a)c.classList.add('ok');else if(c===b)c.classList.add('bad')});
+      finish(v===q.a,v===q.a?'':'<p><b>Richtig wäre:</b> '+(q.a?'Wahr':'Falsch')+'</p>')};
+  }else if(q.t==='ms'){
+    const o=shuffle([...q.c.map(t=>({t,ok:true})),...q.w.map(t=>({t,ok:false}))]);
+    A.innerHTML=o.map((x,i)=>`<button class="opt" data-i="${i}">☐ ${esc(x.t)}</button>`).join('');
+    A.onclick=e=>{const b=e.target.closest('.opt');if(!b||cur.done)return;b.classList.toggle('sel');b.textContent=(b.classList.contains('sel')?'☑ ':'☐ ')+o[+b.dataset.i].t};
+    ctl('<button class="pri" id="check">Prüfen</button>');
+    $('#check').onclick=()=>{let ok=true;
+      [...A.children].forEach((c,i)=>{const sel=c.classList.contains('sel');c.disabled=true;c.classList.remove('sel');
+        if(o[i].ok)c.classList.add('ok');else if(sel)c.classList.add('bad');
+        if(sel!==o[i].ok)ok=false});
+      finish(ok,ok?'':'<p><b>Richtig wären nur:</b> '+o.filter(x=>x.ok).map(x=>esc(x.t)).join(' · ')+'</p>')};
+  }else if(q.t==='mt'){
+    const rights=shuffle([...new Set(q.p.map(p=>p[1]))]);
+    A.innerHTML=shuffle(q.p).map((p,i)=>`<div class="mrow" data-r="${esc(p[1])}"><span>${esc(p[0])}</span><select><option value="">– wählen –</option>${rights.map(r=>`<option>${esc(r)}</option>`).join('')}</select></div>`).join('');
+    ctl('<button class="pri" id="check">Prüfen</button>');
+    $('#check').onclick=()=>{let ok=true;
+      [...A.children].forEach(r=>{const s=r.querySelector('select');const good=s.value===r.dataset.r;s.disabled=true;
+        r.classList.add(good?'ok':'bad');if(!good){ok=false;r.insertAdjacentHTML('beforeend','<small class="muted">→ '+esc(r.dataset.r)+'</small>')}});
+      finish(ok,'')};
+  }else if(q.t==='od'){
+    let arr=shuffle(q.items);if(arr.length>1)while(arr.join('|')===q.items.join('|'))arr=shuffle(q.items);
+    cur.arr=arr;
+    const draw=()=>{A.innerHTML='<p class="muted">Bringe die Schritte in die richtige Reihenfolge (↑ ↓).</p>'+cur.arr.map((t,i)=>`<div class="ordrow"><b>${i+1}.</b><span>${esc(t)}</span><button data-m="-1" data-i="${i}">↑</button><button data-m="1" data-i="${i}">↓</button></div>`).join('')};
+    draw();
+    A.onclick=e=>{const b=e.target.closest('button');if(!b||cur.done)return;const i=+b.dataset.i,j=i+ +b.dataset.m;if(j<0||j>=cur.arr.length)return;[cur.arr[i],cur.arr[j]]=[cur.arr[j],cur.arr[i]];draw()};
+    ctl('<button class="pri" id="check">Prüfen</button>');
+    $('#check').onclick=()=>{let ok=true;
+      [...A.querySelectorAll('.ordrow')].forEach((r,i)=>{const good=cur.arr[i]===q.items[i];if(!good)ok=false;r.classList.add(good?'ok':'bad');r.querySelectorAll('button').forEach(b=>b.disabled=true)});
+      finish(ok,ok?'':'<p><b>Richtige Reihenfolge:</b></p><ol>'+q.items.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>')};
+  }else if(q.t==='cz'){
+    const answers=[];const tpl=q.text.replace(/\{([^}]+)\}/g,(m,a)=>{answers.push(a);return '\u0000'});
+    const bank=shuffle([...new Set([...answers,...q.extra])]);const parts=tpl.split('\u0000');
+    let h='<p class="muted">Wähle für jede Lücke das passende Wort aus der Wortbank.</p><div style="line-height:2.6">';
+    parts.forEach((pt,i)=>{h+=esc(pt);if(i<answers.length)h+=`<select class="cz"><option value="">…</option>${bank.map(x=>`<option>${esc(x)}</option>`).join('')}</select>`});
+    A.innerHTML=h+'</div>';
+    ctl('<button class="pri" id="check">Prüfen</button>');
+    $('#check').onclick=()=>{let ok=true;[...A.querySelectorAll('select')].forEach((sel,i)=>{const g=sel.value===answers[i];sel.disabled=true;sel.style.outline='2px solid '+(g?'var(--ok)':'var(--bad)');if(!g)ok=false});
+      let full='';parts.forEach((pt,i)=>{full+=pt+(i<answers.length?'['+answers[i]+']':'')});
+      finish(ok,ok?'':'<p><b>Richtig wäre:</b> '+esc(full)+'</p>')};
+  }else if(q.t==='tx'){
+    A.innerHTML='<input type="text" id="inp" autocomplete="off" placeholder="Antwort eingeben …">';
+    setTimeout(()=>$('#inp')&&$('#inp').focus(),50);
+    ctl('<button class="pri" id="check">Prüfen</button>');
+    $('#check').onclick=()=>{const v=norm($('#inp').value);if(!v)return;$('#inp').disabled=true;
+      const ok=q.a.some(a=>{const n=norm(a);return v===n||(n.length>=6&&lev(v,n)<=1)});
+      finish(ok,ok?'':'<p><b>Richtig wäre:</b> '+esc(q.a[0])+'</p>')};
+  }else if(q.t==='fr'){
+    A.innerHTML='<textarea id="inp" placeholder="Formuliere deine Antwort in eigenen Worten – oder denke sie dir und decke dann die Musterlösung auf."></textarea>';
+    ctl('<button class="pri" id="check">Musterlösung zeigen</button>');
+    $('#check').onclick=()=>{
+      $('#inp').disabled=true;
+      A.insertAdjacentHTML('beforeend','<div class="model"><b>Musterlösung:</b><p>'+esc(q.m)+'</p><b>Diese Punkte gehören dazu:</b><ul>'+q.pts.map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul></div><p><b>Ehrlich: Hattest du alle Kernpunkte?</b></p>');
+      ctl('<button class="pri" id="y">✔ Ja, alle Kernpunkte</button><button id="n">✘ Nicht ganz</button>');
+      $('#y').onclick=()=>finish(true,'');$('#n').onclick=()=>finish(false,'');
+    };
+  }
+}
+function finish(ok,extra){
+  if(cur.done)return;cur.done=true;
+  const q=cur.q;S.q[q.id]=S.q[q.id]||{s:0,r:0,w:0};const st=S.q[q.id];
+  const retry=run.seen.has(q.id);
+  if(!retry){run.seen.add(q.id);run.n++;if(ok)run.first++;run.log.push({k:q.k,ok})}
+  let gain=0;
+  if(ok){st.s++;st.r++;run.combo++;gain=10+Math.min(run.combo-1,5)*2;S.xp+=gain}
+  else{st.s=0;st.w++;run.combo=0;if(!retry)run.wrong.push(q);if(!run.exam&&!run.retried.has(q.id)){run.retried.add(q.id);run.queue.push(cur.base)}}
+  save();
+  const m=st.s>=2;
+  $('#fb').innerHTML=`<div class="fb ${ok?'ok':'bad'}"><p><b>${ok?'✔ Richtig! +'+gain+' XP':'✘ Leider falsch'}</b>${m?' · 🏅 Frage gemeistert':ok?' · noch 1× richtig bis gemeistert':''}</p>${extra}${q.e?'<p>'+esc(q.e)+'</p>':''}</div>${helpHtml(q,!ok)}`;
+  const last=run.i+1>=run.queue.length;
+  ctl(`<button class="pri" id="next">${last?'Ergebnis':'Weiter ▶'}</button>`);
+  $('#next').onclick=()=>{run.i++;showQ()};
+  $('#next').focus();
+}
+
+/* ---------- Hilfe & Lexikon ---------- */
+function ansText(q){
+  if(q.t==='mc')return q.o[0];if(q.t==='ms')return q.c.join(' ');if(q.t==='mt')return q.p.map(p=>p.join(' ')).join(' ');
+  if(q.t==='cz')return q.text;if(q.t==='od')return q.items.join(' ');if(q.t==='tx')return q.a.join(' ');if(q.t==='fr')return q.m;if(q.t==='tf')return '';return '';
+}
+function helpHtml(q,open){
+  const hay=q.q+' '+ansText(q);
+  const m=LEX.map(e=>({e,n:(hay.match(new RegExp(e.re.source,'g'))||[]).length})).filter(x=>x.n).sort((a,b)=>b.n-a.n).slice(0,3);
+  const k=KANN.find(x=>x[0]===q.k);
+  const body=`<p>📖 <b>Nachlesen im Buch:</b> ${k[3]}${m.length?' – genauer: '+m.map(x=>x.e.p).filter(p=>p!=='–').join(' · '):''}</p>`+
+    m.map(x=>`<p><b>${esc(x.e.t)}</b> <span class="muted">(${x.e.p})</span><br>${x.e.v?'🍕 <i>'+esc(x.e.v)+'</i><br>':''}${esc(x.e.x)}</p>`).join('');
+  return `<details class="help" ${open?'open':''}><summary>${open?'💡 Kurz erklärt – dann musst du vielleicht gar nicht ins Buch':'💡 Erklärung & Buchseite'}</summary>${body}</details>`;
+}
+function lexikon(f){
+  const q=(f||'').toLowerCase();
+  const list=LEX.filter(e=>!q||(e.t+' '+e.x+' '+(e.v||'')).toLowerCase().includes(q));
+  render(`<div class="bar"><button class="ghost" data-act="home">← Zurück</button><div class="t">📖 Lexikon</div><div></div></div>
+  <input class="search" type="text" id="lexq" placeholder="Begriff suchen, z. B. SCADA, QoS, I2C …" value="${esc(f||'')}">
+  ${list.map(e=>`<div class="lexe"><b>${esc(e.t)}</b> <span class="muted">· Buch ${e.p}</span><br>${e.v?'🍕 <i>'+esc(e.v)+'</i><br>':''}${esc(e.x)}</div>`).join('')||'<p class="muted">Nichts gefunden.</p>'}`);
+  const i=$('#lexq');i.focus();i.setSelectionRange(i.value.length,i.value.length);
+  i.oninput=()=>lexikon(i.value);
+}
+
+/* ---------- Ergebnis ---------- */
+function summary(){
+  const pct=run.n?Math.round(run.first/run.n*100):0;
+  let rows='';
+  if(run.exam){
+    rows='<h3>Ergebnis pro Kann-Punkt</h3><table>'+KANN.map(k=>{const l=run.log.filter(x=>x.k===k[0]);if(!l.length)return'';const r=l.filter(x=>x.ok).length;
+      return `<tr><td>${k[0]}</td><td>${esc(k[2])}</td><td>${r}/${l.length}</td><td>${r===l.length?'✅':'⚠️'}</td></tr>`}).join('')+'</table>';
+  }
+  const msg=pct===100?'Perfekt! 🎉':pct>=80?'Stark! 💪':pct>=50?'Solide – bleib dran.':'Weiter üben – genau dafür ist das hier.';
+  render(`<div class="hero"><h1>${esc(run.title)}</h1><div class="big">${pct}%</div>
+  <p>${run.first} von ${run.n} Fragen beim ersten Versuch richtig · +${S.xp-run.xp0} XP · ${msg}</p>
+  ${run.wrong.length?'<h3>Das solltest du nochmal anschauen</h3><ul>'+run.wrong.map(q=>`<li>Kann ${q.k}: ${esc(q.q)}</li>`).join('')+'</ul>':''}
+  ${rows}
+  <p class="muted">💾 Tipp: Sichere deinen Fortschritt auf der Startseite, bevor du das Gerät wechselst.</p><div class="acts"><button class="pri" data-act="again">Nochmal</button>${run.wrong.length?'<button data-act="weak">🔁 Fehler üben</button>':''}<button data-act="home">Zur Übersicht</button></div></div>`);
+}
+
+/* ---------- Events ---------- */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const a=b.dataset.act;
+  if(a==='home'){if(run&&!cur?.done&&run.i<run.queue.length&&run.n>0&&!confirm('Runde beenden? Beantwortete Fragen bleiben gespeichert.'))return;home()}
+  else if(a==='k')practice(+b.dataset.k);
+  else if(a==='mixed')mixed();
+  else if(a==='exam')exam();
+  else if(a==='weak')weak();
+  else if(a==='lex')lexikon();
+  else if(a==='exp'){downloadProgress();home()}
+  else if(a==='imp'){const f=$('#impf');if(f)f.click()}
+  else if(a==='again'&&run&&run.again)run.again();
+  else if(a==='reset'){if(confirm('Wirklich den gesamten Fortschritt löschen?')){S={xp:0,q:{}};save();home()}}
+});
+document.addEventListener('change',e=>{
+  if(e.target.id!=='impf'||!e.target.files[0])return;
+  const r=new FileReader();r.onload=()=>{const res=importData(String(r.result));
+    if(res.ok){home();const m=$('#impmsg');if(m)m.innerHTML='<b style="color:var(--ok)">✔ '+esc(res.msg)+'</b>'}
+    else{const m=$('#impmsg');if(m)m.innerHTML='<b style="color:var(--bad)">✘ '+esc(res.msg)+'</b>'}};
+  r.readAsText(e.target.files[0]);
+});
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  const t=e.target;if(t&&(t.tagName==='TEXTAREA'||t.tagName==='BUTTON'||t.tagName==='SELECT'))return;
+  const n=$('#next');if(n){if(t!==n)n.click();return}
+  const c=$('#check');if(c&&!c.disabled){e.preventDefault();c.click()}
+});
+home();
+</script>
+</body>
+</html>
