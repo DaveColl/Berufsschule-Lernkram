@@ -8,7 +8,7 @@ const fs=require('fs'),vm=require('vm'),path=require('path');
 const dir=path.resolve(process.argv.find((a,i)=>i>1&&!a.startsWith('--'))||'cyberphysische-systeme');
 const dump=process.argv.includes('--dump');
 const ctx=vm.createContext({console,Math,Set,Array,Object,JSON,String,RegExp});
-for(const f of ['fragen1.js','fragen2.js','generator.js']){
+for(const f of ['fragen1.js','fragen2.js','fragen3.js','generator.js']){
   const p=path.join(dir,f);if(!fs.existsSync(p))continue;
   vm.runInContext(fs.readFileSync(p,'utf8'),ctx,{filename:f});
 }
@@ -66,6 +66,8 @@ function lint(e,q){
     if(!q.a||!q.a.length||q.a.some(a=>!norm(a)))E(e,q,'tx ohne gültige Antwort');
     else if(q.gen&&leaks(q.a[0],q.q))W(e,q,'Tippaufgabe verrät die Antwort in der Frage');
   }
+  /* „Tippe den Begriff“: Abkürzung UND Langform müssen als richtig gelten (z. B. LWT / Last Will Testament) */
+  if(q.t==='tx'&&q.gen&&/^Tippe/.test(String(q.q))&&e.full&&!q.a.includes(e.full))E(e,q,'tx akzeptiert die Langform nicht: '+e.full);
   if(q.t==='fr'&&(!q.m||!q.pts||!q.pts.length))E(e,q,'fr ohne Musterlösung/Kernpunkte');
   if(q.t==='cz'){
     const ans=[...q.text.matchAll(/\{([^}]+)\}/g)].map(m=>m[1]);
