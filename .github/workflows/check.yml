@@ -11,4 +11,6 @@ jobs:
         with:
           node-version: 20
       - name: Lernspiel-Aufgaben auf Fehler prüfen
-        run: node tools/check.js cyberphysische-systeme
+        run: |
+          node tools/check.js cyberphysische-systeme
+          node tools/check.js service-management

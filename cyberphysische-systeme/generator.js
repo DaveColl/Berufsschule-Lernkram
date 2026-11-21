@@ -11,17 +11,17 @@ const DEFS=[];
 function D(k,g,rows){rows.forEach(r=>{const e={t:'gen',gen:'def',id:'d:'+r[0],k:r[3]||k,l:'W',g,term:r[0],full:r[1],def:r[2],need:2};DEFS.push(e);Q.push(e)})}
 
 D(2,'ebene',[
-['ERP','Enterprise Resource Planning','Planung des ganzen Unternehmens: Aufträge, Einkauf, Lager, Personal, Geld (Unternehmensleitebene)'],
+['ERP','Enterprise Resource Planning','Planung des ganzen Unternehmens – Aufträge, Einkauf, Lager, Personal, Geld (Unternehmensleitebene)'],
 ['MES','Manufacturing Execution System','setzt Aufträge aus dem ERP in der Fertigung um und sammelt die Rückmeldungen der Maschinen (Betriebsleitebene)'],
-['SCADA','Supervisory Control and Data Acquisition','Leitsystem: überwacht und bedient die Anlage am Bildschirm und sammelt Daten mehrerer Steuerungen (Prozessleitebene)'],
-['SPS','Speicherprogrammierbare Steuerung','speicherprogrammierbarer Steuerungscomputer: arbeitet sein gespeichertes Programm zyklisch ab, liest dabei Sensoren ein und schaltet Aktoren'],
+['SCADA','Supervisory Control and Data Acquisition','Leitsystem – überwacht und bedient die Anlage am Bildschirm und sammelt Daten mehrerer Steuerungen (Prozessleitebene)'],
+['SPS','Speicherprogrammierbare Steuerung','speicherprogrammierbarer Steuerungscomputer – arbeitet sein gespeichertes Programm zyklisch ab, liest dabei Sensoren ein und schaltet Aktoren'],
 ['CNC','Computerized Numerical Control','Steuerung speziell für Werkzeugmaschinen wie Fräse oder Drehbank, die Positionen und Bewegungen aus einem Programm präzise abfährt'],
 ['IPC','Industrie-PC','normaler PC in robuster Bauform für den Dauerbetrieb in der Fabrik – kein Spezialgerät wie die SPS'],
 ['HMI','Human Machine Interface','Bedienoberfläche (z. B. Touchpanel), über die der Mensch Maschinenwerte sieht und Befehle gibt'],
 ['CRM','Customer Relationship Management','Kundenverwaltung im Büro (Kontakte, Anfragen, Angebote) – eine Business-Anwendung']]);
 D(1,'basis',[
 ['IoT','Internet of Things','weltweite Vernetzung eindeutig adressierbarer Objekte, die über einheitliche Standardprotokolle kommunizieren',1],
-['IIoT','Industrial Internet of Things','IoT im industriellen Umfeld: Maschinen und Anlagen werden mit intelligenter Sensorik vernetzt',2],
+['IIoT','Industrial Internet of Things','IoT im industriellen Umfeld – Maschinen und Anlagen werden mit intelligenter Sensorik vernetzt',2],
 ['M2M','Machine-to-Machine','automatisierter Informationsaustausch zwischen Maschinen, Anlagen und Fahrzeugen ohne Mensch dazwischen',2],
 ['KPI','Key Performance Indicator','Kennzahl, mit der Zustand, Leistung oder Erfolg eines Prozesses gemessen wird, z. B. Maschinenverfügbarkeit oder Ausschussquote',2],
 ['CPS','Cyber-physisches System','Verbund aus Informatik, Mechanik und Elektrik, der vernetzt mit IT-Systemen kommuniziert',5],
@@ -29,7 +29,7 @@ D(1,'basis',[
 ['Smart Factory','','sich selbst organisierende und optimierende Produktionsumgebung mit vernetzten Maschinen',5],
 ['Smart Home','','CPS in Wohn- und Bürogebäuden für Komfort, Sicherheit und Energiesparen',5],
 ['Retrofitting','','Nach- und Umrüsten bestehender Maschinen mit Sensorik/CPS, damit sie vernetzt werden können',4],
-['Predictive Maintenance','','vorausschauende Instandhaltung: Störungen werden aus Sensordaten vorausberechnet',4],
+['Predictive Maintenance','','vorausschauende Instandhaltung – Störungen werden aus Sensordaten vorausberechnet',4],
 ['Dashboard','','Visualisierung von Produktions- und Prozessdaten, Messwerten und Kennzahlen in einer übersichtlichen Ansicht',6],
 ['API','Application Programming Interface','offene Programmierschnittstelle, die Entwicklern den universellen Zugriff auf einen Dienst erlaubt',6],
 ['Produkt-Service-System','','Produkt und Dienstleistung werden als Komplettpaket verkauft, z. B. gesteuerte Fenster plus gesundes Raumklima durch intelligente Belüftung',4],
@@ -60,8 +60,8 @@ D(7,'sensm',[
 ['DHT22','','Sensor für Temperatur und Luftfeuchtigkeit'],
 ['MH-Z19B','','CO₂-Sensor nach dem NDIR-Prinzip']]);
 D(7,'hw',[
-['Raspberry Pi','','Einplatinencomputer: vollwertiger Computer mit Betriebssystem auf einer Platine'],
-['Arduino','','Mikrocontrollerboard: Open-Source-Entwicklungsumgebung, Programm läuft zyklisch in einer Schleife'],
+['Raspberry Pi','','Einplatinencomputer – vollwertiger Computer mit Betriebssystem auf einer Platine'],
+['Arduino','','Mikrocontrollerboard – Open-Source-Entwicklungsumgebung, Programm läuft zyklisch in einer Schleife'],
 ['SBC','Single-Board-Computer','ein vollständiger Computer (Prozessor, RAM, Schnittstellen) auf einer einzigen Platine'],
 ['MCU','Microcontroller Unit','Chip mit Prozessor und oft Speicher, der ein Programm zyklisch für eine spezifische Aufgabe ausführt'],
 ['ESP32','','WLAN-Mikrocontroller mit zusätzlich Bluetooth, mehr SRAM und mehr I/O'],
@@ -80,12 +80,12 @@ D(9,'funk',[
 ['Z-Wave','','Funk für Hausautomation bei 900 MHz, max. 30 m, bis zu 232 Geräte'],
 ['RFID','Radio Frequency Identification','identifiziert Tags per elektromagnetischem Feld, Reichweite ca. 10 cm bis 200 m'],
 ['NFC','Near Field Communication','Nahfeldfunk bei 13,56 MHz mit ca. 10 cm Reichweite, z. B. kontaktloses Bezahlen'],
-['Wi-Fi','','IEEE 802.11: günstige Infrastruktur, aber hoher Stromverbrauch; bis ca. 100 m und 600 Mbit/s'],
+['Wi-Fi','','IEEE 802.11 – günstige Infrastruktur, aber hoher Stromverbrauch; bis ca. 100 m und 600 Mbit/s'],
 ['LoRaWAN','Long Range Wide Area Network','LPWAN mit 0,3–50 kbit/s und 2–15 km Reichweite, sehr sparsam, Millionen Geräte'],
 ['NB-IoT','Narrowband Internet of Things','LPWAN bis ca. 10 km, Signal dringt durch Wände und in den Untergrund'],
-['Sigfox','','LPWAN für Device-to-Cloud: Geräte funken nur bei Bedarf'],
+['Sigfox','','LPWAN für Device-to-Cloud – Geräte funken nur bei Bedarf'],
 ['LTE-M','','bindet IoT-Geräte direkt ans 4G-Netz an (ohne Gateway), ca. 100 kbit/s, lange Akkulaufzeit'],
-['5G','','fünfte Mobilfunkgeneration (2019): ca. 1 Gbit/s, sehr viele Geräte, geringe Latenz'],
+['5G','','fünfte Mobilfunkgeneration (2019) – ca. 1 Gbit/s, sehr viele Geräte, geringe Latenz'],
 ['6LoWPAN','IPv6 over Low power Wireless Personal Area Network','IPv6 über stromsparende Funknetze – Protokoll der Vermittlungsschicht',8]]);
 D(10,'mqtt',[
 ['MQTT','Message Queue Telemetry Transport','schlankes Publish/Subscribe-Protokoll der Anwendungsschicht für das IoT'],
@@ -94,21 +94,21 @@ D(10,'mqtt',[
 ['Publisher','','Client, der Nachrichten zu einem Topic sendet'],
 ['Subscriber','','Client, der Topics abonniert und deren Nachrichten empfängt'],
 ['Topic','','Thema einer Nachricht, aus Ebenen aufgebaut, die durch / getrennt sind'],
-['Wildcard +','','einstufiger Platzhalter: ersetzt eine Topic-Ebene (nur beim Abonnieren)'],
-['Wildcard #','','mehrstufiger Platzhalter: ersetzt alle folgenden Ebenen und steht am Ende'],
+['Wildcard +','','einstufiger Platzhalter – ersetzt eine Topic-Ebene (nur beim Abonnieren)'],
+['Wildcard #','','mehrstufiger Platzhalter – ersetzt alle folgenden Ebenen und steht am Ende'],
 ['QoS 0','','höchstens einmal – „Fire and Forget“, schnell und ressourcenschonend'],
 ['QoS 1','','mindestens einmal – mit PUBACK, Duplikate sind möglich'],
 ['QoS 2','','genau einmal – weder Verlust noch Duplikate; dafür zweistufige Bestätigung (PUBREC, PUBREL, PUBCOMP) und damit langsamer'],
 ['PUBACK','','Quittung des Empfängers bei QoS 1 (PUBLISH-Paket quittiert)'],
-['PUBREC','','QoS 2, zweiter Schritt: Empfänger bestätigt den Erhalt (received)'],
-['PUBREL','','QoS 2, dritter Schritt: Sender gibt frei (released)'],
-['PUBCOMP','','QoS 2, letzter Schritt: Empfänger bestätigt, dass alles komplett ist (complete)'],
+['PUBREC','','QoS 2, zweiter Schritt – Empfänger bestätigt den Erhalt (received)'],
+['PUBREL','','QoS 2, dritter Schritt – Sender gibt frei (released)'],
+['PUBCOMP','','QoS 2, letzter Schritt – Empfänger bestätigt, dass alles komplett ist (complete)'],
 ['LWT','Last Will Testament','Broker sendet bei unerwartetem Verbindungsabbruch den hinterlegten „letzten Willen“ an die Subscriber'],
 ['Retained Message','','neuer Subscriber erhält sofort den zuletzt gesendeten Wert des Topics'],
 ['Persistent Session','','Sitzung überlebt die Verbindung, über die Client-ID erkannt; verpasste Nachrichten werden nachgeliefert'],
 ['Keep Alive','','Zeitvorgabe für inaktive Verbindungen; Lebenszeichen per PINGREQ/PINGRESP'],
 ['Mosquitto','','kleiner nativer MQTT-Broker, geeignet für den Raspberry Pi'],
-['Packet Identifier','','Kennung im PUBLISH-Paket bei QoS 1: Der Empfänger quittiert mit PUBACK und derselben Kennung']]);
+['Packet Identifier','','Kennung im PUBLISH-Paket bei QoS 1 – Der Empfänger quittiert mit PUBACK und derselben Kennung']]);
 D(11,'gefa',[
 ['USV','unterbrechungsfreie Stromversorgung','überbrückt Netzausfälle, damit die Server weiterlaufen'],
 ['Disaster-Recovery-Plan','','Plan zur Wiederherstellung von Daten und Betrieb nach einem Schaden, z. B. einem Brand'],
@@ -189,7 +189,7 @@ S(12,'gefsensor','Welcher Sensor bzw. welche Überwachung meldet das?',[['Brand'
 S(13,'schnszen','Welche Schnittstelle nimmst du?',[['Mehrere Sensoren sollen mit nur zwei Leitungen und Adressen an einen Bus','I²C'],['Ein CO₂-Sensor ist über TX und RX angeschlossen','UART'],['Ein Baustein soll voll duplex und besonders schnell angebunden werden','SPI'],['Eine LED soll an einem freien Pin ein- und ausgeschaltet werden','GPIO']]);
 S(4,'ziele','Mit welchem Ansatz erreicht man das Ziel mit CPS?',[['Maschinenverfügbarkeit erhöhen','Predictive Maintenance'],['Produktionsprozess maschinenübergreifend koordinieren','Plattform wie MES sammelt Rückmeldungen und sendet Planänderungen zurück'],['Energieverbrauch von Maschinen reduzieren','Maschinen koordinieren ihren Verbrauch und glätten Lastspitzen'],['Durchgängige Qualitätskontrolle','Inline-Überwachung mit Kameras (Vision Control)'],['Informationsaustausch Maschine ↔ Mensch vereinfachen','Echtzeitinfos und papierlose Anweisungen'],['Werkzeugmanagement optimieren','CPS erfassen Betriebsdaten der Werkzeuge und überwachen deren Lebenszyklus'],['Flexibilität und Effizienz der Montage erhöhen','Bauteile werden ergonomisch am Arbeitsplatz platziert und der Einbau wird automatisch überwacht'],['Feinplanung an Fertigungslinien optimieren','Schichtführer simulieren und ändern die Planung über Dashboards auf mobilen Endgeräten'],['Produktionsaufträge im ganzen Fertigungsprozess identifizieren','Bauteile werden automatisch erkannt, Aufträgen zugeordnet und mit MES/ERP abgeglichen'],['Wertschöpfende Zusatzleistungen für Kunden schaffen','Nutzungs- und Umgebungsdaten beim Kunden erfassen für Produktverbesserungen und neue Dienstleistungen']]);
 C(2,'handlung','Handlungsfeld der Smart Factory',['Produktionsplanung','Produktionssteuerung','Vorhersage','Analyse'],[['Echtzeitmeldung der Ressourcenbelegung und des Personaleinsatzes','Produktionsplanung'],['Reihenfolge von Kundenaufträgen und Arbeitsgängen planen','Produktionsplanung'],['Alle Prozesse online überwachen und Abweichungen früh erkennen','Produktionssteuerung'],['Materialreichweite und Liefertermine berechnen','Vorhersage'],['Bevorstehende Instandhaltung und zu erwartende Qualität vorhersagen','Vorhersage'],['Kennzahlen und KPI online bereitstellen','Analyse'],['Langzeitanalysen mit maschinellem Lernen aus sehr großen Datenmengen','Analyse']]);
-C(4,'smarthome','Einsatzgebiet im Smart Home',['Haushaltsgeräte und Komfort','Energieversorgung','Sicherheit'],[['Kühlschrank mit Kamera: Inhalt beim Einkauf prüfen','Haushaltsgeräte und Komfort'],['Licht dimmt sich beim Einschalten der Multimedia-Anlage','Haushaltsgeräte und Komfort'],['Jalousien fahren bei Sonneneinstrahlung automatisch herunter','Haushaltsgeräte und Komfort'],['Heizung schaltet ab, wenn Fenster oder Türen offen sind','Energieversorgung'],['Licht geht aus, sobald niemand mehr im Raum ist','Energieversorgung'],['Bestehende Gebäude werden nachgerüstet, um Heizenergie zu sparen','Energieversorgung'],['Anwesenheit der Bewohner wird durch Licht und Rollläden simuliert','Sicherheit'],['Sensoren erkennen ein gekipptes Fenster und lassen es aus der Ferne schließen','Sicherheit'],['App benachrichtigt bei Einbruchsversuch Bewohner oder Sicherheitsdienst','Sicherheit']]);
+C(4,'smarthome','Einsatzgebiet im Smart Home',['Haushaltsgeräte und Komfort','Energieversorgung','Sicherheit'],[['Kühlschrank mit Kamera zeigt beim Einkauf, was noch da ist','Haushaltsgeräte und Komfort'],['Licht dimmt sich beim Einschalten der Multimedia-Anlage','Haushaltsgeräte und Komfort'],['Jalousien fahren bei Sonneneinstrahlung automatisch herunter','Haushaltsgeräte und Komfort'],['Heizung schaltet ab, wenn Fenster oder Türen offen sind','Energieversorgung'],['Licht geht aus, sobald niemand mehr im Raum ist','Energieversorgung'],['Bestehende Gebäude werden nachgerüstet, um Heizenergie zu sparen','Energieversorgung'],['Anwesenheit der Bewohner wird durch Licht und Rollläden simuliert','Sicherheit'],['Sensoren erkennen ein gekipptes Fenster und lassen es aus der Ferne schließen','Sicherheit'],['App benachrichtigt bei Einbruchsversuch Bewohner oder Sicherheitsdienst','Sicherheit']]);
 C(4,'autofeld','Einsatzgebiet im Automotive-Bereich',['Flottenmanagement','Autonomes Fahren','Automotive Maintenance System','Infotainment und Telematik'],[['Echtzeit-Standortüberwachung einer Lkw-Flotte','Flottenmanagement'],['Überwachung von Volumen und Gewicht der Ladung in der Cloud','Flottenmanagement'],['Autonom fahrende Taxis mit Fußgängererkennung','Autonomes Fahren'],['Automatisierter ÖPNV erschließt den ländlichen Raum','Autonomes Fahren'],['Eingebettete Sensoren melden Verschleiß, KI wertet aus, Teile werden vorbeugend getauscht','Automotive Maintenance System'],['Bei einem Unfall wird automatisch der Notruf gewählt und die Position übermittelt','Infotainment und Telematik'],['Lieblingsmusik läuft vom Haus bis ins Auto ohne Unterbrechung','Infotainment und Telematik']]);
 C(7,'vernetzung','Richtung der Vernetzung',['untereinander','innerhalb des Unternehmens','entlang der Wertschöpfungskette','mit dem Menschen'],[['Werkzeugmaschine und eingesetztes Werkzeug','untereinander'],['Werkzeug und SCADA-System','innerhalb des Unternehmens'],['Werkzeug überwacht seinen Verschleiß und löst beim Lieferanten eine Bestellung aus','entlang der Wertschöpfungskette'],['Maschinenführerin bereitet den Werkzeugwechsel vor','mit dem Menschen']]);
 C(9,'mobilfunk','Mobilfunkgeneration',['2G','3G','4G'],[['GSM / GPRS / EDGE','2G'],['UMTS / HSPA','3G'],['LTE','4G']]);

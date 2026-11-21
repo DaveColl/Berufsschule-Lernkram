@@ -33,6 +33,14 @@ function lint(e,q){
   if(txt.some(x=>/undefined|NaN|\[object|null/.test(x)))E(e,q,'enthält undefined/NaN/null');
   if(!q.q||String(q.q).trim().length<6)E(e,q,'Fragetext fehlt');
   if(String(q.q).length>320)W(e,q,'Fragetext sehr lang');
+  /* Vorlagen-Fehler: verschachtelte Klammern, doppelte Signalwörter, Frage im Zuordnungs-Thema */
+  if(/\([^)]*\(/.test(String(q.q)))E(e,q,'verschachtelte Klammern');
+  if((String(q.q).match(/Szenario/g)||[]).length>1)E(e,q,'„Szenario“ steht doppelt im Fragetext');
+  if(/Zuordnung \([^)]*\?\)/.test(String(q.q)))E(e,q,'Zuordnungs-Thema ist als Frage formuliert');
+  if(/\?[.:,;]/.test(String(q.q)))E(e,q,'„?“ direkt gefolgt von Satzzeichen (Frage in Vorlage eingesetzt)');
+  /* doppelter Doppelpunkt nach dem Einsetzen: „Begriff: Präfix: …“ */
+  const dc=x=>/^[^:]{1,45}: [^:]{1,45}: /.test(String(x));
+  if([q.q,...(q.o||[]),...((q.p||[]).flat())].some(dc))E(e,q,'doppelter Doppelpunkt („Begriff: Präfix: …“)');
   const sq=stripQuotes(String(q.q));
   if(/\?\s+(?!Wähle|Nenne|Ordne|Gib|Beschreibe|Erkläre)[A-ZÄÖÜ„]/.test(sq))E(e,q,'mehrere Fragesätze hintereinander (…? Satz)');
   if(q.t==='tf'){

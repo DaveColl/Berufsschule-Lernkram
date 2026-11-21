@@ -25,6 +25,9 @@ Das hat in der Vergangenheit zu echten Fehlern geführt – such gezielt danach:
 - **Identische oder fast identische Optionen** (auch nach dem Mischen), leere Optionen, verschachtelte Anführungszeichen („…„…““), doppelte Gedankenstriche.
 - **Tipp-Aufgaben (tx)**: Wird jede vernünftige Schreibweise akzeptiert (z. B. `CO2` statt `CO₂`, `I2C` statt `I²C`)? Gibt es mehrere Begriffe, die zur Beschreibung passen?
 - **Inhaltliche Fehler** gegenüber dem Buch: falsche Zahlen (Reichweiten, Datenraten, Ports, Schwellwerte), falsche Zuordnungen, Behauptungen, die das Buch nicht stützt.
+- **Sich überschneidende Definitionen**, die gegeneinander als Distraktor laufen (z. B. „Personenbezogene Daten“ ↔ „Pseudonymisierte Daten“, „SOW“ ↔ „Leistungsbeschreibung“). Abhilfe im Generator: Sperrpaar in `EXCL` eintragen.
+- **Fehlende Alternativen bei Tippaufgaben**: deutsche Namen, Synonyme, Langformen (z. B. „Steuerung“ für Governance). Abhilfe: Eintrag in `ALIAS`.
+- **Szenario-Items als Frage** (ergibt „?.“) und **Definitionen mit Doppelpunkt** (ergibt „Begriff: Präfix: …“) – beides prüft `tools/check.js` inzwischen automatisch.
 - **Uneinheitliche Beschriftungen** (z. B. IDA-Klassen mal „hohe Raumluftqualität“, mal „mittlere“).
 - **Pädagogik**: Sind die falschen Antworten plausibel, aber eindeutig falsch? Passt der Schwierigkeitsgrad zur Stufe (Wissen / Verstehen / Anwenden)?
 
