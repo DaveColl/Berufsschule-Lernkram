@@ -230,14 +230,16 @@ function build(q){
       [...A.querySelectorAll('.ordrow')].forEach((r,i)=>{const good=cur.arr[i]===q.items[i];if(!good)ok=false;r.classList.add(good?'ok':'bad');r.querySelectorAll('button').forEach(b=>b.disabled=true)});
       finish(ok,ok?'':'<p><b>Richtige Reihenfolge:</b></p><ol>'+q.items.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>')};
   }else if(q.t==='cz'){
-    const answers=[];const tpl=q.text.replace(/\{([^}]+)\}/g,(m,a)=>{answers.push(a);return '\u0000'});
-    const bank=shuffle([...new Set([...answers,...q.extra])]);const parts=tpl.split('\u0000');
-    let h='<p class="muted">Wähle für jede Lücke das passende Wort aus der Wortbank.</p><div style="line-height:2.6">';
+    const answers=[];const tpl=q.text.replace(/\{([^}]+)\}/g,(m,a)=>{const mm=a.match(/^(.*)#(\w+)$/);answers.push(mm?{t:mm[1],g:mm[2]}:{t:a,g:''});return '\u0000'});
+    const bank=shuffle([...new Set([...answers.map(x=>x.t),...q.extra])]);const parts=tpl.split('\u0000');
+    let h='<p class="muted">Wähle für jede Lücke das passende Wort aus der Wortbank.'+(answers.some(x=>x.g)?' Bei Aufzählungen ist die Reihenfolge egal.':'')+(q.ordered?' Hier zählt die Reihenfolge.':'')+'</p><div style="line-height:2.6">';
     parts.forEach((pt,i)=>{h+=esc(pt);if(i<answers.length)h+=`<select class="cz"><option value="">…</option>${bank.map(x=>`<option>${esc(x)}</option>`).join('')}</select>`});
     A.innerHTML=h+'</div>';
     ctl('<button class="pri" id="check">Prüfen</button>');
-    $('#check').onclick=()=>{let ok=true;[...A.querySelectorAll('select')].forEach((sel,i)=>{const g=sel.value===answers[i];sel.disabled=true;sel.style.outline='2px solid '+(g?'var(--ok)':'var(--bad)');if(!g)ok=false});
-      let full='';parts.forEach((pt,i)=>{full+=pt+(i<answers.length?'['+answers[i]+']':'')});
+    $('#check').onclick=()=>{const sels=[...A.querySelectorAll('select')],vals=sels.map(s=>s.value),good=answers.map((x,i)=>!x.g&&vals[i]===x.t);
+      [...new Set(answers.filter(x=>x.g).map(x=>x.g))].forEach(g=>{const idx=answers.map((x,i)=>x.g===g?i:-1).filter(i=>i>=0),pool=idx.map(i=>answers[i].t);idx.forEach(i=>{const k=pool.indexOf(vals[i]);if(k>=0){pool.splice(k,1);good[i]=true}})});
+      let ok=true;sels.forEach((sel,i)=>{sel.disabled=true;sel.style.outline='2px solid '+(good[i]?'var(--ok)':'var(--bad)');if(!good[i])ok=false});
+      let full='';parts.forEach((pt,i)=>{full+=pt+(i<answers.length?'['+answers[i].t+']':'')});
       finish(ok,ok?'':'<p><b>Richtig wäre:</b> '+esc(full)+'</p>')};
   }else if(q.t==='tx'){
     A.innerHTML='<input type="text" id="inp" autocomplete="off" placeholder="Antwort eingeben …">';

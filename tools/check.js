@@ -78,8 +78,10 @@ function lint(e,q){
   if(q.t==='tx'&&q.gen&&/^Tippe/.test(String(q.q))&&e.full&&!q.a.includes(e.full))E(e,q,'tx akzeptiert die Langform nicht: '+e.full);
   if(q.t==='fr'&&(!q.m||!q.pts||!q.pts.length))E(e,q,'fr ohne Musterlösung/Kernpunkte');
   if(q.t==='cz'){
-    const ans=[...q.text.matchAll(/\{([^}]+)\}/g)].map(m=>m[1]);
+    const ans=[...q.text.matchAll(/\{([^}]+)\}/g)].map(m=>m[1].replace(/#\w+$/,''));
     if(!ans.length)E(e,q,'Lückentext ohne Lücken');
+    /* Aufzählung aus Lücken ("{A}, {B} und {C}") ohne #Gruppe = Reihenfolge würde fälschlich zählen */
+    if(!q.ordered&&/\{[^}#]+\}(, | und )\{[^}#]+\}(, | und )\{[^}#]+\}/.test(q.text))E(e,q,'Aufzählung im Lückentext ohne #Gruppe – Reihenfolge würde gewertet');
   }
 }
 const ids=new Map(),samples=[];

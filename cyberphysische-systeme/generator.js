@@ -248,22 +248,22 @@ function makeSortRate(e){const s=sh(RATE).slice(0,4),d=rn(2)===0;s.sort((a,b)=>d
   return base(e,{t:'od',q:`Sortiere nach Datenrate – ${d?'von NIEDRIG nach HOCH':'von HOCH nach NIEDRIG'}.`,items:s.map(x=>x[0])})}
 
 /* ================= 5) LÜCKENTEXTE (statisch, Wortbank) ================= */
-function Z(k,text,extra){Q.push({k,l:'V',t:'cz',q:'Lückentext',text,extra:extra||[]})}
+function Z(k,text,extra,ordered){Q.push({k,l:'V',t:'cz',q:'Lückentext',text,extra:extra||[],ordered:!!ordered})}
 Z(10,'MQTT arbeitet nach dem {Publish/Subscribe}-Prinzip. Ein {Broker} nimmt Nachrichten entgegen und verteilt sie an alle {Subscriber} des passenden {Topics}.',['Request/Response','Router']);
 Z(13,'Bei I²C braucht man die Leitungen {SDA} (Daten) und {SCL} (Takt). SPI nutzt zusätzlich die Leitung {CS}, mit der der Master den {Slave} auswählt.',['TX','RX']);
 Z(5,'Die Entwicklungsstufen der Industrie: {Mechanisierung} (1.0), {Massenproduktion} (2.0), {Automatisierung} (3.0) und {cyber-physische Systeme} (4.0).',['Digitalisierung']);
-Z(2,'Die Automatisierungspyramide von oben nach unten: {ERP}, {MES}, {SCADA}, {SPS} und die Feldebene mit Sensoren und {Aktoren}.',['CRM','HMI']);
+Z(2,'Die Automatisierungspyramide von oben nach unten: {ERP}, {MES}, {SCADA}, {SPS} und die Feldebene mit Sensoren und {Aktoren}.',['CRM','HMI'],true);
 Z(2,'Das {ERP} plant das Unternehmen, das {MES} setzt die Aufträge in der Fertigung um, {SCADA} überwacht die Anlage am Bildschirm und die {SPS} steuert die einzelne Maschine.',['CRM','HMI']);
 Z(7,'Der {Sensor} misst den Istwert, der {Komparator} vergleicht ihn mit dem {Sollwert}, der {Aktor} heizt oder kühlt. Die Rückführung des Istwerts heißt {Rückkopplung}.',['Broker','Steuerung']);
 Z(8,'MQTT liegt in der {Anwendungsschicht}, TCP in der {Transportschicht}, IP in der {Vermittlungsschicht}, LPWAN in der {Sicherungsschicht} und Bluetooth in der {Bitübertragungsschicht}.',[]);
 Z(10,'QoS {0} bedeutet höchstens einmal, QoS {1} mindestens einmal, QoS {2} genau einmal. Bei QoS 2 folgt auf PUBLISH zuerst PUBREC, dann {PUBREL} und zuletzt {PUBCOMP}.',['PUBACK','3']);
-Z(6,'Die sechs Anforderungen an eine IoT-Plattform: {Konnektivität}, offene {Schnittstellen}, {Management}, {Datenanalyse}, {Reporting} und {Sicherheit}.',['Verpackung']);
+Z(6,'Die sechs Anforderungen an eine IoT-Plattform: {Konnektivität#a}, offene {Schnittstellen}, {Management#a}, {Datenanalyse#a}, {Reporting#a} und {Sicherheit#a}.',['Verpackung']);
 Z(12,'Bei Rauch alarmiert der {Rauchmelder} Feuerwehr und IT, danach startet der {Disaster-Recovery-Plan}. Bei Netzausfall überbrückt die {USV}.',['Doppelboden']);
-Z(13,'Das {EVA}-Prinzip steht für Eingabe, Verarbeitung, Ausgabe. Betrachtet werden die Flüsse {Information}, {Materie} und {Energie}.',['Geld']);
+Z(13,'Das {EVA}-Prinzip steht für Eingabe, Verarbeitung, Ausgabe. Betrachtet werden die Flüsse {Information#a}, {Materie#a} und {Energie#a}.',['Geld']);
 Z(9,'RFID identifiziert Tags per {elektromagnetischem Feld}, NFC reicht nur etwa {10 cm} weit und LoRaWAN ist ein {LPWAN} mit mehreren Kilometern Reichweite.',['Lichtwellenleiter','100 m']);
 Z(7,'Ein {Mikrocontroller} führt ein Programm zyklisch aus. Ein {Einplatinencomputer} wie der Raspberry Pi hat ein Betriebssystem. Der {ESP32} besitzt WLAN und zusätzlich {Bluetooth}.',['Router']);
 Z(1,'Zu den {Business-Anwendungen} zählen CRM und ERP. Daten aus der {Fertigung} liefern MES, SCADA, HMI und SPS.',['Cloud']);
-Z(12,'MQTT wird über {Benutzername} und Passwort, über {TLS} und über {Zertifikate} abgesichert.',['Klartext']);
+Z(12,'MQTT wird über {Benutzername} und Passwort, über {TLS#a} und über {Zertifikate#a} abgesichert.',['Klartext']);
 Z(3,'Das {IoT} ist der Oberbegriff für vernetzte Objekte. Das {IIoT} beschränkt sich auf den industriellen Einsatz mit Maschinen und {Anlagen}.',['Consumer']);
 
 /* ================= Dispatcher ================= */

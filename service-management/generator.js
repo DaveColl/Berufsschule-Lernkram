@@ -194,16 +194,16 @@ function makeImacNext(e){const i=rn(6),before=rn(2)===0,t=before?(i+5)%6:(i+1)%6
 function makeV3Ord(e){return base(e,{t:'od',q:'Bringe die Phasen des Service-Lebenszyklus aus ITIL V3 in die richtige Reihenfolge.',items:subsetOrder(V3,3+rn(3))})}
 
 /* ================= 5) LÜCKENTEXTE ================= */
-function Z(k,text,extra){Q.push({k,l:'V',t:'cz',q:'Lückentext',text,extra:extra||[]})}
-Z(3,'IT-Service-Management beinhaltet {Organisation}, {Prozesse} und {Werkzeuge}.',['Werbung','Zufall']);
-Z(4,'Der IMAC/R/D-Zyklus: {Install}, {Move}, {Add}, {Change}, {Remove} und {Dispose}.',['Monitor','Deploy']);
+function Z(k,text,extra,ordered){Q.push({k,l:'V',t:'cz',q:'Lückentext',text,extra:extra||[],ordered:!!ordered})}
+Z(3,'IT-Service-Management beinhaltet {Organisation#a}, {Prozesse#a} und {Werkzeuge#a}.',['Werbung','Zufall']);
+Z(4,'Der IMAC/R/D-Zyklus: {Install}, {Move}, {Add}, {Change}, {Remove} und {Dispose}.',['Monitor','Deploy'],true);
 Z(13,'Beim {Dienstvertrag} wird die Tätigkeit geschuldet, beim {Werkvertrag} ein konkreter Erfolg.',['Kaufvertrag','Mietvertrag']);
 Z(14,'Ein {SLA} wird mit dem Kunden vereinbart, ein {OLA} intern zwischen Abteilungen und ein {UC} mit externen Dienstleistern.',['NDA','AVV']);
 Z(14,'Das {MSA} ist ein langfristiger Rahmenvertrag, das {SOW} beschreibt konkrete Aufgaben, Fristen und Preise.',['SLA','NDA']);
-Z(8,'Das ITIL Service-Wert-System besteht aus {Leitprinzipien}, {Governance}, der {Service Value Chain}, kontinuierlicher Verbesserung und {Practices}.',['PESTLE','IMAC/R/D']);
+Z(8,'Das ITIL Service-Wert-System besteht aus {Leitprinzipien#a}, {Governance#a}, der {Service Value Chain#a}, kontinuierlicher Verbesserung und {Practices#a}.',['PESTLE','IMAC/R/D']);
 Z(8,'ITIL 4 kennt {34} Practices: {14} allgemeine, {17} Service- und {3} technische Management-Practices.',['5','7']);
-Z(11,'Die vier Dimensionen sind {Organisation & Personen}, {Informationen & Technologien}, {Partner & Lieferanten} und {Wertströme & Prozesse}.',['Kunden & Preise']);
-Z(7,'Die CMMI-Reifegrade: {Initial}, {Managed}, {Defined}, {Quantitatively Managed} und {Optimizing}.',['Incomplete','Performed']);
+Z(11,'Die vier Dimensionen sind {Organisation & Personen#a}, {Informationen & Technologien#a}, {Partner & Lieferanten#a} und {Wertströme & Prozesse#a}.',['Kunden & Preise']);
+Z(7,'Die CMMI-Reifegrade: {Initial}, {Managed}, {Defined}, {Quantitatively Managed} und {Optimizing}.',['Incomplete','Performed'],true);
 Z(10,'{Incident Management} stellt den Service schnell wieder her, {Problem Management} beseitigt die Ursache wiederkehrender Störungen.',['Change Management','Service Desk']);
 Z(15,'Wird die Verarbeitung personenbezogener Daten an Dritte ausgelagert, braucht man einen {AV-Vertrag} nach Art. {28} DSGVO; im Anhang stehen die {TOM}.',['NDA','32']);
 Z(8,'Das Service-Wert-System beginnt mit der {Nachfrage} und erzeugt {Wertschöpfung} für den Kunden.',['Rechnung','Entsorgung']);
