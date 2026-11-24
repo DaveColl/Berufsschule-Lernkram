@@ -40,9 +40,10 @@ function lint(e,q){
   if(/\?[.:,;]/.test(String(q.q)))E(e,q,'„?“ direkt gefolgt von Satzzeichen (Frage in Vorlage eingesetzt)');
   /* doppelter Doppelpunkt nach dem Einsetzen: „Begriff: Präfix: …“ */
   const dc=x=>/^[^:]{1,45}: [^:]{1,45}: /.test(String(x));
-  if([q.q,...(q.o||[]),...((q.p||[]).flat())].some(dc))E(e,q,'doppelter Doppelpunkt („Begriff: Präfix: …“)');
+  if(/„„|““/.test([q.q,...(q.o||[]),...((q.p||[]).flat())].join(' ')))E(e,q,'doppelte Anführungszeichen („„ oder ““)');
+  if(q.gen&&[q.q,...(q.o||[]),...((q.p||[]).flat())].some(dc))E(e,q,'doppelter Doppelpunkt („Begriff: Präfix: …“)');
   const sq=stripQuotes(String(q.q));
-  if(/\?\s+(?!Wähle|Nenne|Ordne|Gib|Beschreibe|Erkläre)[A-ZÄÖÜ„]/.test(sq))E(e,q,'mehrere Fragesätze hintereinander (…? Satz)');
+  if(/\?\s+(?!Wähle|Nenne|Ordne|Gib|Beschreibe|Erkläre|Begründe|Erläutere|Bringe)[A-ZÄÖÜ„]/.test(sq))E(e,q,'mehrere Fragesätze hintereinander (…? Satz)');
   if(q.t==='tf'){
     if(QW.test(String(q.q).trim())||/\?\s*$/.test(String(q.q)))E(e,q,'Wahr/Falsch-Aufgabe ist als Frage formuliert statt als Aussage');
     if(typeof q.a!=='boolean')E(e,q,'tf ohne boolean');

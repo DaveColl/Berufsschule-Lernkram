@@ -38,7 +38,7 @@ D(6,'std',[
 ['ISO/IEC 20000','','internationale Norm für IT-Service-Management mit zertifizierbaren Anforderungen'],
 ['ITIL','IT Infrastructure Library','weltweit wichtiges Best-Practice-Rahmenwerk für Service-Management, im Skript in Version 4 mit 34 Practices'],
 ['COBIT','Control Objectives for Information and related Technology','Rahmenwerk mit Fokus auf IT-Governance und IT-Unternehmensmanagement'],
-['FitSM','','größtenteils freies, leichtgewichtiges ITSM-Rahmenwerk nach dem Motto „Keep it simple“'],
+['FitSM','','größtenteils freies, leichtgewichtiges ITSM-Rahmenwerk nach dem Motto „Keep it simple“ mit einfachen, praktikablen Lösungen'],
 ['ISO 15504','','Norm zur Prozessbewertung (SPICE), Nachfolger ISO 330xx'],
 ['CMMI','Capability Maturity Model Integration','Modell, das Prozesse nach Reife- und Fähigkeitsgraden bewertet',7],
 ['SIAM','Service Integration and Management','Managementmethode auf ITIL-Basis, wenn Services von mehreren Providern bezogen werden',11]]);

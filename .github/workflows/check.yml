@@ -14,3 +14,4 @@ jobs:
         run: |
           node tools/check.js cyberphysische-systeme
           node tools/check.js service-management
+          node tools/check.js kommunikation
